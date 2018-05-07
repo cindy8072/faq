@@ -27,5 +27,11 @@ class AnswerTest extends TestCase
         $answer->question()->associate($question);
         $this->assertTrue($answer->save());
     }
+    public function testAnswerLike()
+    {
+        $this->assertDatabaseHas('answers', [
+            'like' => True
+        ]);
+    }
 
 }

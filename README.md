@@ -17,7 +17,7 @@ Epic:Add like/unlike to multiple answers and good answer will be placed at top a
 
 User Story:
 
-1.Users login and create questions and answers
+1.Users register and login then create questions and answers
 
 2.Users can answer questions and click like/unlike button for multiple answers
 

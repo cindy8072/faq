@@ -24,7 +24,8 @@ class AnswerController extends Controller
     {
         $answer = new Answer;
         $edit = FALSE;
-        return view('answerForm', ['answer' => $answer,'edit' => $edit, 'question' =>$question  ]);
+        $like = FALSE;
+        return view('answerForm', ['answer' => $answer,'edit' => $edit, 'question' =>$question,'like' => $like ]);
     }
     /**
      * Store a newly created resource in storage.
@@ -45,6 +46,7 @@ class AnswerController extends Controller
         $Answer = new Answer($input);
         $Answer->user()->associate(Auth::user());
         $Answer->question()->associate($question);
+        $Answer->like = FALSE;
         $Answer->save();
         return redirect()->route('questions.show',['question_id' => $question->id])->with('message', 'Saved');
     }
@@ -86,7 +88,6 @@ class AnswerController extends Controller
             'body.required' => 'Body is required',
             'body.min' => 'Body must be at least 5 characters',
         ]);
-
         $answer = Answer::find($answer);
         $answer->body = $request->body;
         $answer->save();
@@ -103,5 +104,21 @@ class AnswerController extends Controller
         $answer = Answer::find($answer);
         $answer->delete();
         return redirect()->route('questions.show',['question_id' => $question])->with('message', 'Delete');
+    }
+    public function likeAns($question, $answer)
+    {
+        $answer = Answer::find($answer);
+        $question = Question::find($question);
+        $answer->like = TRUE;
+        $answer->save();
+        return redirect()->route('questions.show',['question_id' => $question->id])->with('message', 'Answer Like Updated');
+    }
+    public function unlikeAns($question,  $answer)
+    {
+        $answer = Answer::find($answer);
+        $question = Question::find($question);
+        $answer->like = FALSE;
+        $answer->save();
+        return redirect()->route('questions.show',['question_id' => $question->id])->with('message', 'Answer unLike Updated');
     }
 }
